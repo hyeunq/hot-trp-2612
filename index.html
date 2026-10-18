@@ -23,6 +23,7 @@ tr.go{cursor:pointer}td:first-child{white-space:nowrap;font-weight:600}
 .ck li{margin:6px 0}.chip{display:inline-block;background:var(--chip);border-radius:6px;padding:1px 7px;font-size:12px;color:var(--sub)}
 .res{padding:10px 0;border-bottom:1px solid var(--bd)}.res:last-child{border:0}.res p{margin:2px 0;font-size:13px;color:var(--sub)}
 .res a,.res button{font-size:13px;color:var(--ac);background:none;border:0;padding:4px 10px 4px 0;text-decoration:underline}
+.emb{display:block;width:100%;height:280px;border:0;border-radius:12px;margin-bottom:10px;background:var(--chip)}
 .note{font-size:12px;color:var(--sub)}
 </style></head><body>
 <h1>신혼여행 2026.12.07 ~ 12.16</h1><p class="sub">취리히 · 그린델발트 · 밀라노 (베르가모 당일치기)</p>
@@ -54,6 +55,8 @@ const D=[
 const R=[['항공','12/7 KE901 ICN 12:05 → CDG 18:35','12/7 에어프랑스 CDG 21:10 → ZRH 22:30','f1'],['항공','12/16 MXP 20:05 → ICN (12/17 15:45)','','f2'],
 ['숙소','Central Plaza (취리히)','12/7 15:00 ~ 12/9 12:00','h1','Central Plaza Zurich'],['숙소','Chalet JOLUKSI (에어비앤비)','Endweg 42, 3818 Grindelwald, 12/9 16:00 이후 ~ 12/12 10:00 전','h2','Endweg 42, 3818 Grindelwald'],['숙소','Hilton Milan','12/12 16:00 ~ 12/16 11:00','h3','Hilton Milan'],
 ['교통','스위스 하프페어 카드','구매 필요','t1'],['교통','융프라우요흐 티켓','12/10 또는 12/11','t2'],['교통','그린델발트 → 밀라노 열차','12/12','t3'],['교통','렌터카','12/14 베르가모','t4'],['티켓','최후의 만찬','12/15','t5']];
+const KEY='';
+const emb=x=>{if(!KEY)return '';const q=encodeURIComponent,o=x.o;return '<iframe class="emb" loading="lazy" allowfullscreen src="https://www.google.com/maps/embed/v1/directions?key='+KEY+'&language=ko&origin='+q(o[0])+'&destination='+q(o[o.length-1])+(o.length>2?'&waypoints='+o.slice(1,-1).map(q).join('%7C'):'')+'&mode='+x.mode+'"></iframe>'};
 const L=k=>{try{return localStorage.getItem(k)||''}catch(e){return ''}};
 const S=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 const mp=(o,m)=>{const q=encodeURIComponent;return 'https://www.google.com/maps/dir/?api=1&origin='+q(o[0])+'&destination='+q(o[o.length-1])+(o.length>2?'&waypoints='+q(o.slice(1,-1).join('|')):'')+'&travelmode='+m};
@@ -62,7 +65,7 @@ const tabs=['전체',...D.map(x=>x.d),'예약'];let cur=0;
 function go(i){cur=i;[...nav.children].forEach((b,j)=>b.classList.toggle('on',j==i));scrollTo(0,0);
 if(i==0)v.innerHTML='<div class="card"><h2>전체 일정</h2><div class="wrap"><table><tr><th>일자</th><th>구간</th><th>교통</th><th>숙소</th><th>주요 일정</th></tr>'+D.map((x,j)=>`<tr class="go" onclick="go(${j+1})"><td>${x.d} (${x.w})</td><td>${x.r}</td><td>${x.tr}</td><td>${x.ho}</td><td>${x.m}</td></tr>`).join('')+'</table></div><p class="note">행을 누르면 해당 날짜로 이동해요.</p></div>';
 else if(i==tabs.length-1){v.innerHTML='<div class="card"><h2>예약 내역</h2>'+R.map(r=>{const k='lk'+r[3],u=L(k);return `<div class="res"><b>${r[0]}</b> ${r[1]}<p>${r[2]}</p>${u?`<a href="${u}" target="_blank" rel="noopener">예약 링크 열기</a>`:''}<button onclick="ed('${k}')">${u?'링크 수정':'+ 링크 추가'}</button>${r[4]?`<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r[4])}" target="_blank" rel="noopener">지도</a>`:''}</div>`}).join('')+'<p class="note">링크는 이 기기의 브라우저에만 저장돼요.</p></div>'}
-else{const x=D[i-1];v.innerHTML=`<a class="map" href="${mp(x.o,x.mode)}" target="_blank" rel="noopener">구글 지도에서 동선 열기</a><p class="route">${x.o.map(s=>'<b>'+s.split(',')[0]+'</b>').join(' → ')}</p><div class="card" style="margin-top:12px"><h2>${x.d} (${x.w}) ${x.r}</h2><span class="chip">${x.tr}</span> <span class="chip">${x.ho}</span><h3>세부 일정</h3><ul class="tl">${x.it.map(t=>`<li><time>${t[0]}</time><span>${t[1]}</span></li>`).join('')}</ul><h3>예약 및 준비</h3><ul class="ck">${x.rs.map(t=>`<li>${t}</li>`).join('')}</ul></div>`}}
+else{const x=D[i-1];v.innerHTML=emb(x)+`<a class="map" href="${mp(x.o,x.mode)}" target="_blank" rel="noopener">구글 지도에서 동선 열기</a><p class="route">${x.o.map(s=>'<b>'+s.split(',')[0]+'</b>').join(' → ')}</p><div class="card" style="margin-top:12px"><h2>${x.d} (${x.w}) ${x.r}</h2><span class="chip">${x.tr}</span> <span class="chip">${x.ho}</span><h3>세부 일정</h3><ul class="tl">${x.it.map(t=>`<li><time>${t[0]}</time><span>${t[1]}</span></li>`).join('')}</ul><h3>예약 및 준비</h3><ul class="ck">${x.rs.map(t=>`<li>${t}</li>`).join('')}</ul></div>`}}
 function ed(k){const u=prompt('예약 링크(URL)를 붙여넣어 주세요',L(k));if(u!==null){S(k,u.trim());go(cur)}}
 tabs.forEach((t,i)=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>go(i);nav.appendChild(b)});go(0);
 </script></body></html>
