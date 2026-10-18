@@ -55,7 +55,7 @@ const D=[
 const R=[['항공','12/7 KE901 ICN 12:05 → CDG 18:35','12/7 에어프랑스 CDG 21:10 → ZRH 22:30','f1'],['항공','12/16 MXP 20:05 → ICN (12/17 15:45)','','f2'],
 ['숙소','Central Plaza (취리히)','12/7 15:00 ~ 12/9 12:00','h1','Central Plaza Zurich'],['숙소','Chalet JOLUKSI (에어비앤비)','Endweg 42, 3818 Grindelwald, 12/9 16:00 이후 ~ 12/12 10:00 전','h2','Endweg 42, 3818 Grindelwald'],['숙소','Hilton Milan','12/12 16:00 ~ 12/16 11:00','h3','Hilton Milan'],
 ['교통','스위스 하프페어 카드','구매 필요','t1'],['교통','융프라우요흐 티켓','12/10 또는 12/11','t2'],['교통','그린델발트 → 밀라노 열차','12/12','t3'],['교통','렌터카','12/14 베르가모','t4'],['티켓','최후의 만찬','12/15','t5']];
-const KEY='';
+const KEY='AIzaSyDNin1JJgb26dN5w7O5DFeEd0kANHBcQVM';
 const emb=x=>{if(!KEY)return '';const q=encodeURIComponent,o=x.o;return '<iframe class="emb" loading="lazy" allowfullscreen src="https://www.google.com/maps/embed/v1/directions?key='+KEY+'&language=ko&origin='+q(o[0])+'&destination='+q(o[o.length-1])+(o.length>2?'&waypoints='+o.slice(1,-1).map(q).join('%7C'):'')+'&mode='+x.mode+'"></iframe>'};
 const L=k=>{try{return localStorage.getItem(k)||''}catch(e){return ''}};
 const S=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
